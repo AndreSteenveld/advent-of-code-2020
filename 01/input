@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 echo "value"
-jq '. | [.] | @csv' <<<EOF
+jq '. | [.] | @csv' <<EOF
 1337
 1906
 2007
