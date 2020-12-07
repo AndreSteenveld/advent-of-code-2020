@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+declare jq_filter='
+
+    split( "\n\n" )  
+    | map( split( "\n" ) )  
+    | to_entries
+    | reduce .[ ] as $group 
+        ( 
+            [ ] ; 
+            . + 
+            ( $group.value
+            | to_entries
+            | reduce .[ ] as $person 
+                ( 
+                    [ ] ;
+                    . + 
+                    ( $person.value 
+                    | [ scan( "." ) ] 
+                    | map([ $group.key, $person.key, . ]) 
+                    )
+                )
+            ) 
+        )
+    | .[ ] 
+    | @csv
+
+'
+
+echo 'group_no,person_no,answer'
+
+jq --raw-input --raw-output --slurp "$jq_filter" <<EOF
+abc
+
+a
+b
+c
+
+ab
+ac
+
+a
+a
+a
+a
+
+b
+EOF
