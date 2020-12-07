@@ -1,7 +1,7 @@
 create table input ( value integer not null );
 
 .mode csv
-.import -v --csv --skip 1 '|/input' input
+.import -v --csv --skip 1 '|/root/input' input
 
 .mode table
 
