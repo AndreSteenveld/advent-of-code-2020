@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+echo 'line'
+
+# The tree lines are 31 positions wide
+# and there are 323 lines
+
+jq --raw-input --raw-output '. | [.] | @csv' <<EOF
+..##.......
+#...#...#..
+.#....#..#.
+..#.#...#.#
+.#...##..#.
+..#.##.....
+.#.#.#....#
+.#........#
+#.##...#...
+#...##....#
+.#..#...#.#
+EOF
