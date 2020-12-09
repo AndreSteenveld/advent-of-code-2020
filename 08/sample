@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+declare jq_filter='
+    [ scan( "(nop|acc|jmp) ([+-]\\d+)" ) ]
+    | to_entries 
+    | map
+      ( .
+      | .key as $ic
+      | .value as [ $op, $arg ] 
+      | [ $ic, $op, ( $arg | tonumber ) ] 
+      )
+    | .[ ] 
+    | @csv
+'
+
+echo 'op,arg'
+
+jq --raw-input --raw-output --slurp "$jq_filter" <<EOF
+nop +0
+acc +1
+jmp +4
+acc +3
+jmp -3
+acc -99
+acc +1
+jmp -4
+acc +6
+EOF
